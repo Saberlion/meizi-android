@@ -19,6 +19,7 @@ build/
 
 # Android Studio files
 .idea/
+*.iml
 /*/*.iml
 
 # Local configuration file (sdk path, etc)
