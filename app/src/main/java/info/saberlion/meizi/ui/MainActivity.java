@@ -9,8 +9,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -93,10 +93,10 @@ public class MainActivity extends AppCompatActivity
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        final StaggeredGridLayoutManager layoutManager
-                = new StaggeredGridLayoutManager(2,
-                StaggeredGridLayoutManager.VERTICAL);
-        //RecyclerView.LayoutManager layoutManager =new LinearLayoutManager(this);
+//        final StaggeredGridLayoutManager layoutManager
+//                = new StaggeredGridLayoutManager(2,
+//                StaggeredGridLayoutManager.VERTICAL);
+        RecyclerView.LayoutManager layoutManager =new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mContextListAdapter);
 
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getPics(int num){
-        String url = MeiziApi.getRandomMeizi(10);
+        String url = MeiziApi.getRandomMeizi(num);
         Log.d(TAG,url);
         GsonRequest<PicList> request =
                 new GsonRequest<>(url,PicList.class,

@@ -21,9 +21,11 @@ public class NetController {
 
     private static NetController mInstance;
 
+    final int maxDiskCacheBytes = 1 << 27;
+
     private NetController(Context context){
         mContext = context;
-        mRequestQueue = Volley.newRequestQueue(mContext);
+        mRequestQueue = Volley.newRequestQueue(mContext,maxDiskCacheBytes);
         mImageLoader = new ImageLoader(mRequestQueue,new LruBitmapCache());
     }
 
