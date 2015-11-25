@@ -21,7 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PicActivity"/>
+        <activity
+            android:name=".ui.PicActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
     <!-- 网络权限 -->

@@ -80,7 +80,9 @@ public class ContextListAdapter extends RecyclerView.Adapter<ContextListAdapter.
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             imageView = (NetworkImageView) itemView.findViewById(R.id.pic);
+            imageView.setDefaultImageResId(R.drawable.ic_autorenew_black_18dp);
             imageView.setOnClickListener(this);
 
         }
