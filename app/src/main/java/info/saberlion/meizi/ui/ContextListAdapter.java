@@ -18,6 +18,7 @@ import info.saberlion.meizi.R;
 import info.saberlion.meizi.api.MeiziApi;
 import info.saberlion.meizi.model.Filename;
 import info.saberlion.meizi.net.NetController;
+import info.saberlion.meizi.util.IntentUtil;
 
 
 public class ContextListAdapter extends RecyclerView.Adapter<ContextListAdapter.ViewHolder> {
@@ -92,8 +93,8 @@ public class ContextListAdapter extends RecyclerView.Adapter<ContextListAdapter.
 
                 case R.id.title:
 //                    String topic_title = item.title;
-//                    String openUrl = ZhihuApi.getNewsContent(item.id);
 //                    IntentUtils.openWebView(v.getContext(), topic_title, openUrl);
+                    IntentUtil.openPic(v.getContext(),MeiziApi.getPicUrl(item.filename));
                     break;
 
             }
