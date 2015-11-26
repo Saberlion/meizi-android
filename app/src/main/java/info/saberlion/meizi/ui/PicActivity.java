@@ -1,12 +1,13 @@
 package info.saberlion.meizi.ui;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -25,9 +26,10 @@ import java.util.Random;
 
 import info.saberlion.meizi.R;
 import info.saberlion.meizi.net.NetController;
+import info.saberlion.meizi.util.ToastUtil;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class PicActivity extends AppCompatActivity {
+public class PicActivity extends Activity {
     public static String TAG;
     public static final String IMAGE_URL = "image_url";
     boolean mIsHidden;
@@ -46,15 +48,7 @@ public class PicActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_pic);
 
-        mAppBar = (AppBarLayout) findViewById(R.id.app_bar_layout);
-        mAppBar.setAlpha(0.3f);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         mImageView = (ImageView) findViewById(R.id.pic_detail);
         mImageUrl = getIntent().getStringExtra(IMAGE_URL);
@@ -90,15 +84,25 @@ public class PicActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 //TODO 保存图片
+                Log.d(TAG,"onLongClick");
+                saveImage(createViewBitmap(v));
                 return true;
             }
         });
 
     }
 
+    public Bitmap createViewBitmap(View v) {
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        v.draw(canvas);
+        return bitmap;
+    }
 
     private void saveImage(Bitmap bitmap) {
-        File myDir = new File("/sdcard/saved_images");
+        String app_name = this.getString(R.string.app_name);
+        File myDir = new File("/sdcard/"+app_name);
         myDir.mkdirs();
         Random generator = new Random();
         int n = 10000;
@@ -111,6 +115,7 @@ public class PicActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
+            ToastUtil.showShort(R.string.save_image);
         } catch (Exception e) {
             e.printStackTrace();
         }

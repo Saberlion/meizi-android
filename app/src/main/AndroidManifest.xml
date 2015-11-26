@@ -24,7 +24,8 @@
         <activity
             android:name=".ui.PicActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            />
     </application>
 
     <!-- 网络权限 -->

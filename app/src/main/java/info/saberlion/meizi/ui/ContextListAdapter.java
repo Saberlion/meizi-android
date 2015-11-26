@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -30,7 +29,6 @@ public class ContextListAdapter extends RecyclerView.Adapter<ContextListAdapter.
 
     List<Filename> items = new ArrayList<>();
 
-    RequestQueue requestQueue = NetController.getInstance().getRequestQueue();
 
     ImageLoader imageLoader = NetController.getInstance().getImageLoader();
 

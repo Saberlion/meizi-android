@@ -5,4 +5,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="exit_toast">再按一次退出</string>
+    <string name="save_image">图片保存在sdcard</string>
 </resources>
