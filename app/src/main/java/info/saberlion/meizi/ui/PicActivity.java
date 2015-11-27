@@ -22,7 +22,9 @@ import com.android.volley.toolbox.ImageRequest;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import info.saberlion.meizi.R;
 import info.saberlion.meizi.net.NetController;
@@ -104,9 +106,9 @@ public class PicActivity extends Activity {
         String app_name = this.getString(R.string.app_name);
         File myDir = new File("/sdcard/"+app_name);
         myDir.mkdirs();
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formator= new SimpleDateFormat("yyyyMMdd-HHMMSS");
+        String n = formator.format(new Date(System.currentTimeMillis()));
         String fname = "Image-" + n + ".jpg";
         File file = new File(myDir, fname);
         if (file.exists()) file.delete();
@@ -115,7 +117,8 @@ public class PicActivity extends Activity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
-            ToastUtil.showShort(R.string.save_image);
+            String toastString = this.getString(R.string.save_image)+fname;
+            ToastUtil.showShort(toastString);
         } catch (Exception e) {
             e.printStackTrace();
         }
