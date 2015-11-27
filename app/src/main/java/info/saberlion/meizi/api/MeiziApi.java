@@ -11,8 +11,8 @@ public class MeiziApi {
     public static final String MEIZI_API_THUMBNAIL_URL =
             "http://saberlion.u.qiniudn.com/%s?imageView2/0/w/%d/h/%d/interlace/1";
 
-    private static int mHight = 200;
-    private static int mWidth = 200;
+    private static int mHight = 512;
+    private static int mWidth = 512;
 
     // MeiziApi GET
     public static String getRandomMeizi(int n) {
@@ -24,11 +24,11 @@ public class MeiziApi {
     }
 
     public static String getThumbNailUrl(String filename) {
-        return String.format(MEIZI_API_PIC_URL, filename, mWidth, mHight);
+        return String.format(MEIZI_API_THUMBNAIL_URL, filename, mWidth, mHight);
     }
 
     public static String getThumbNailUrl(String filename, int width, int hight) {
-        return String.format(MEIZI_API_PIC_URL, filename, width, hight);
+        return String.format(MEIZI_API_THUMBNAIL_URL, filename, width, hight);
     }
 
 }
