@@ -37,11 +37,15 @@ public class MainActivity extends AppCompatActivity
 
     final static String TAG = MainActivity.class.getSimpleName();
 
-    SwipeRefreshLayout swipeRefreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     ContextListAdapter mContextListAdapter;
 
+    StaggeredGridLayoutManager mLayoutManager;
+
     RequestQueue mRequestQueue;
+
+    boolean mIsFirstTimeTouchBottom;
 
     List<String> mPicUrl;
 
@@ -72,12 +76,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
                 android.R.color.holo_red_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
@@ -95,13 +99,12 @@ public class MainActivity extends AppCompatActivity
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        final StaggeredGridLayoutManager layoutManager
-                = new StaggeredGridLayoutManager(2,
+        mLayoutManager = new StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.VERTICAL);
-        //RecyclerView.LayoutManager layoutManager =new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        //RecyclerView.LayoutManager mLayoutManager =new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mContextListAdapter);
-
+        recyclerView.addOnScrollListener(getOnBottomListener(mLayoutManager));
         mRequestQueue = NetController.getInstance().getRequestQueue();
 
         getPics(10);
@@ -109,30 +112,30 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void getPics(int num){
+    private void getPics(int num) {
         String url = MeiziApi.getRandomMeizi(num);
-        Log.d(TAG,url);
+        Log.d(TAG, url);
         GsonRequest<PicList> request =
-                new GsonRequest<>(url,PicList.class,
+                new GsonRequest<>(url, PicList.class,
                         new Response.Listener<PicList>() {
                             @Override
                             public void onResponse(PicList response) {
-                                Log.d(TAG,response.msg);
+                                Log.d(TAG, response.msg);
                                 mContextListAdapter.addItems(response.filename);
-                                swipeRefreshLayout.setRefreshing(false);
+                                mSwipeRefreshLayout.setRefreshing(false);
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                                swipeRefreshLayout.setRefreshing(false);
+                                mSwipeRefreshLayout.setRefreshing(false);
                             }
                         });
 
         mRequestQueue.add(request);
 
-        swipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -212,5 +215,25 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    RecyclerView.OnScrollListener getOnBottomListener(StaggeredGridLayoutManager layoutManager) {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView rv, int dx, int dy) {
+                boolean isBottom =
+                        mLayoutManager.findLastCompletelyVisibleItemPositions(
+                                new int[2])[1] >=
+                                mContextListAdapter.getItemCount() - 10;
+                if (!mSwipeRefreshLayout.isRefreshing() && isBottom) {
+                    if (!mIsFirstTimeTouchBottom) {
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        getPics(10);
+                    } else {
+                        mIsFirstTimeTouchBottom = false;
+                    }
+                }
+            }
+        };
     }
 }
