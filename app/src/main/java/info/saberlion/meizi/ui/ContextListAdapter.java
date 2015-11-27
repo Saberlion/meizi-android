@@ -57,7 +57,7 @@ public class ContextListAdapter extends RecyclerView.Adapter<ContextListAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         Filename item = items.get(position);
         holder.setItem(item);
-        holder.imageView.setImageUrl(MeiziApi.getPicUrl(item.filename), imageLoader);
+        holder.imageView.setImageUrl(MeiziApi.getThumbNailUrl(item.filename), imageLoader);
     }
 
     @Override
