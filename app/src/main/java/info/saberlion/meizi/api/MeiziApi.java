@@ -11,8 +11,8 @@ public class MeiziApi {
     public static final String MEIZI_API_THUMBNAIL_URL =
             "http://saberlion.u.qiniudn.com/%s?imageView2/0/w/%d/h/%d/interlace/1";
 
-    private static int mHight = 512;
-    private static int mWidth = 512;
+    private static int mHight = 768;
+    private static int mWidth = 768;
 
     // MeiziApi GET
     public static String getRandomMeizi(int n) {
